@@ -18,10 +18,12 @@ export default function Router(){
             path:'/',
             element:<MainLayout/>,
             children:[
-                {element:<ClientHome/>, index:true}
+                {element:<ClientHome/>, index:true},
+                {element:<GetProducts/>, path:'get-products'}
             ]            
 
         }
     ])
 }
 const ClientHome = Loadable(lazy(() => import("../page/client/Home")));
+const GetProducts = Loadable(lazy(() => import("../page/client/GetProducts")));

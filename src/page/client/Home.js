@@ -1,12 +1,17 @@
 import { useState } from "react";
 import {QrReader}  from "react-qr-reader";
+import { useNavigate } from "react-router-dom";
 import Page from "../../component/Page";
 
 export default function ClientHome() {
     const [barcode,setBarcode]= useState('');
     const [checked,setChecked] = useState(false);
+    const navigate = useNavigate();
     const handleResult = (result,err)=>{
         console.log(result, err)
+    }
+    const handleClick = ()=>{
+        navigate('/get-products',{replace:true})
     }
     return (
         <Page title='Client Home'>
@@ -28,7 +33,7 @@ export default function ClientHome() {
                     />
                 </div>
                 <input type="text" placeholder="QR code or ID" className ="input input-bordered input-md w-full max-w-xs"  value = {barcode} onChange = {(e)=>setBarcode(e.target.value)} />
-                <button className="btn  btn-outline btn-info" disabled={barcode===''}>Get Products</button>
+                <button className="btn  btn-outline btn-info" disabled={barcode===''} onClick = {handleClick}>Get Products</button>
                 
             </div>
         </Page>
