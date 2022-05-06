@@ -8,6 +8,9 @@ export default function ClientHome() {
     const [checked,setChecked] = useState(false);
     const navigate = useNavigate();
     const handleResult = (result,err)=>{
+        if(!!result){
+            setBarcode(result?.text);
+        }
         console.log(result, err)
     }
     const handleClick = ()=>{
