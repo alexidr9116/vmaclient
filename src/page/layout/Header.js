@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { Icon } from "@iconify/react";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from 'react-redux';
 
 import useAuth from "../../hook/useAuth";
@@ -25,7 +25,7 @@ const languages = {
 }
 export default function Header({ dashboard = false }) { 
   const { user, logout, isAuthenticated } = useAuth();
- 
+  const navigate = useNavigate();
   const [drawer, setDrawer] = useState();
   const [language, setLanguage] = useState(languages.mn);
   const [changePassword, setChangePassword] = useState(false);
@@ -46,7 +46,7 @@ export default function Header({ dashboard = false }) {
     
   }, []);
   return (
-    <div className="bg-stone-50 p-2  z-50">
+    <div className="p-2  z-50">
       <div className="container flex justify-between  max-w-6xl">
         <Link to="/" className="mr-5">
           <img src="../../assets/logo.png" className="h-16" alt="logo" /> 
@@ -79,8 +79,22 @@ export default function Header({ dashboard = false }) {
               </label>
             }
           >
-            <div className="shadow bg-base-100 rounded p-2 mt-2 min-w-max last:border-none">
-               
+            <div className="shadow bg-base-100 rounded px-2 py-1 mt-2 min-w-max last:border-none">
+              <div className='border-b py-1'>
+                <button className='btn btn-sm btn-ghost w-full justify-start gap-3'>
+                  Users
+                </button>
+              </div>
+              <div className='border-b py-1'>
+                <button className='btn btn-sm w-full btn-ghost  justify-start gap-3' onClick={()=>{navigate('/admin/get-machines',{replace:true})}}>
+                  Vendor Machines
+                </button>
+              </div>
+              <div className='py-1'>
+                <button className='btn btn-sm w-full btn-ghost  justify-start gap-3'>
+                  Products
+                </button>
+              </div>
             </div>
           </DropdownMenu>
           {dashboard && isAuthenticated &&

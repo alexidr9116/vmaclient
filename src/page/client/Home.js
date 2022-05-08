@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Page from "../../component/Page";
 
 export default function ClientHome() {
-    const [barcode,setBarcode]= useState('waiting...');
+    const [barcode,setBarcode]= useState('');
     const [checked,setChecked] = useState(false);
     const navigate = useNavigate();
     const handleResult = (result,err)=>{

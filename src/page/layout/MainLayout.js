@@ -5,7 +5,7 @@ import Header from "./Header";
 
 export default function MainLayout(){
     return (
-        <main className='max-w-md px-auto container'>
+        <main className='px-auto container'>
             <Header />
             <Outlet />
             <Footer />

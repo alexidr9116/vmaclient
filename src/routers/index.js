@@ -15,15 +15,27 @@ const Loadable = (Component)=>(props)=>
 export default function Router(){
     return useRoutes([
         {
+            path:'/admin',
+            element:<MainLayout/>,
+            children:[
+                {element:<GetProducts/>, path:'get-products/:id'},
+                {element:<GetMachines/>, path:'get-machines'}
+            ]            
+
+        },
+        {
             path:'/',
             element:<MainLayout/>,
             children:[
                 {element:<ClientHome/>, index:true},
-                {element:<GetProducts/>, path:'get-products'}
+                {element:<Products/>, path:'get-products'}
             ]            
 
         }
     ])
 }
 const ClientHome = Loadable(lazy(() => import("../page/client/Home")));
-const GetProducts = Loadable(lazy(() => import("../page/client/GetProducts")));
+const Products = Loadable(lazy(() => import("../page/client/GetProducts")));
+
+const GetProducts = Loadable(lazy(() => import("../page/admin/ProductList")));
+const GetMachines = Loadable(lazy(() => import("../page/admin/MachineList")));
