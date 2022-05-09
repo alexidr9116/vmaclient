@@ -14,7 +14,7 @@ export default function ClientHome() {
         console.log(result, err)
     }
     const handleClick = ()=>{
-        navigate('/get-products',{replace:true})
+        navigate(`/get-products/${barcode}`,{replace:true})
     }
     return (
         <Page title='Client Home'>

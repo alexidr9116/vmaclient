@@ -9,11 +9,9 @@ module.exports = {
         sans: ['Inter', ...defaultTheme.fontFamily.sans],
       },
     },
-    
     container:{
       center:true,
     }
   },
-  
   plugins: [require('daisyui')],
 }

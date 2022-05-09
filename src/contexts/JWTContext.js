@@ -77,7 +77,7 @@ function AuthProvider({ children }) {
             const accessToken = window.localStorage.getItem('accessToken');
             if (accessToken && isValidToken(accessToken)) {
                 setSession(accessToken);
-                const response = await SEND_GET_REQUEST('/api/service/auth/my-account');
+                const response = await SEND_GET_REQUEST('/api/mini-vendor/auth/my-account');
               
                 const { user } = response.data;
              

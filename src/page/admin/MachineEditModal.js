@@ -1,13 +1,15 @@
 import { Icon } from "@iconify/react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import LoadingScreen from "../../component/custom/LoadingScreen";
 import Image from "../../component/Image";
+import { API_ADMIN, API_CLIENT, ASSETS_URL, SEND_GET_REQUEST, SEND_POST_REQUEST, SEND_PUT_REQUEST } from "../../utils/API";
 
-export default function MachineEditModal({onClose, id = ''}) {
-    const [machine, setMachine] = useState({});
+export default function MachineEditModal({onClose, machine, id = 'add'}) {
+  
     const [loading,setLoading] = useState(false);
-
+    
     const defaultValues = useMemo(() => ({
         img: machine?.img || "",
         vendorId:machine?.vendorId||"",
@@ -27,16 +29,74 @@ export default function MachineEditModal({onClose, id = ''}) {
     }
     const onSubmit = (data)=>{
         console.log(data);
+        setLoading(true);
+        let iData = new FormData();
+        if (typeof img === "object") {
+
+            iData.append("img", img);
+            iData.append("vendorId", data.vendorId);
+            iData.append("slotCount", data.slotCount);
+            iData.append("title", data.title);
+            iData.append("description", data.description);
+            iData.append("id", id);
+            SEND_PUT_REQUEST(API_ADMIN.addMiniVendor, iData).then(res => {
+                setLoading(false);
+                if (res.status === 200) {
+                    toast.success(res.message)
+                    onClose()
+                }
+                else {
+                    toast.error(res.message)
+                }
+
+            }).catch(err=>{
+                toast.error("Internal Server Error")
+            });;
+        }
+        else {
+
+            if (id === "add") {
+                toast.error("Choose Image File");
+                setLoading(false);
+                return;
+            }
+            else {
+                SEND_PUT_REQUEST(API_ADMIN.editMiniVendor, { ...data, id }).then(res => {
+                    setLoading(false);
+                    if (res.status === 200) {
+                        toast.success(res.message)
+                        onClose()
+                    }
+                    else {
+                        toast.error(res.message)
+                    }
+
+                }).catch(err=>{
+                    setLoading(false);
+                    console.log(err);
+                    toast.error("Server Error")
+                });
+            }
+
+        }
     }
+
+    useEffect(()=>{
+        if(id!=="add" && machine!==null){
+            reset(defaultValues)
+            setValue('img',`${ASSETS_URL.root}${machine.img}`);
+         }
+    },[id,machine,reset,defaultValues,setValue])
+
     return (
         <div className={`modal modal-open bg-black/0 `}>
             <div className=" fixed inset-0 bg-black/80" onClick={onClose} />
             <div className='z-50 bg-white rounded-xl py-5 px-3'>
-                <p className="text-center font-bold text-xl mb-3">{id === "" ? `Add New Vendor Machine` : `Edit Vendor Machine`} </p>
+                <p className="text-center font-bold text-xl mb-3">{id === "add" ? `Add New Vendor Machine` : `Edit Vendor Machine`} </p>
                 <form className="flex flex-col items-center gap-3 p-2"
                     onSubmit={handleSubmit(onSubmit)}
                 >
-                    <div className='grid grid-cols-2'>
+                    <div className='grid grid-cols-2 w-full'>
                         <div>
                             <div className="w-full mb-3">
                                 <p className="">VendorID*</p>

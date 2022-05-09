@@ -1,13 +1,29 @@
 import axios, { SERVER_ADDRESS } from "./axios";
- 
+
+const API_ADMIN = {
+    addMiniVendor:      "api/mini-vendor/admin/vendor/add",
+    editMiniVendor:     "api/mini-vendor/admin/vendor/edit",
+    getMiniVendors:     "api/mini-vendor/admin/vendor/list",
+    addProduct:         "api/mini-vendor/admin/product/add",
+    editProduct:        "api/mini-vendor/admin/product/edit",
+    getProducts:        "api/mini-vendor/admin/products/list/",
+    
+}
+const API_CLIENT = {
+    getMiniVendor:      "api/mini-vendor/vendor/",
+    getProducts:        "api/mini-vendor/product/list/"
+}
 const API_AUTH = {
-    login: "api/service/auth/login",
-    register: "api/service/auth/register",
-    verifyPassword: "api/service/auth/verify-password",
-    verifyOTP: "api/service/auth/verify-otp",
-    setProfileWithImage: "api/service/auth/set-profile-with-image",
-    setProfileWithoutImage: "api/service/auth/set-profile-without-image",
-    changePassword: "api/service/auth/change-password",
+    login: "api/mini-vendor/auth/login",
+    register: "api/mini-vendor/auth/register",
+    verifyPassword: "api/mini-vendor/auth/verify-password",
+    verifyOTP: "api/mini-vendor/auth/verify-otp",
+    setProfileWithImage: "api/mini-vendor/auth/set-profile-with-image",
+    setProfileWithoutImage: "api/mini-vendor/auth/set-profile-without-image",
+    changePassword: "api/mini-vendor/auth/change-password",
+}
+const API_BILLING = {
+    saveBillingInfo :'api/mini-vendor/auth/set-billing'
 }
 const ASSETS_URL = {
     root: SERVER_ADDRESS,
@@ -63,5 +79,8 @@ export {
     SEND_PUT_REQUEST,
     SEND_POST_REQUEST_WITH_FORM_DATA,
     ASSETS_URL, 
-    API_AUTH
+    API_AUTH,
+    API_ADMIN,
+    API_CLIENT,
+    API_BILLING
 };
