@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { Icon } from "@iconify/react";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from 'react-redux';
+import {useTranslation} from 'react-i18next';
 import toast from 'react-hot-toast';
 import useAuth from "../../hook/useAuth";
 import Drawer from '../../component/Drawer';
@@ -28,6 +28,14 @@ export default function Header({ dashboard = false }) {
   const [drawer, setDrawer] = useState();
   const [language, setLanguage] = useState(languages.mn);
   const [changePassword, setChangePassword] = useState(false);
+  const {i18n, t} = useTranslation();
+
+  const handleLanguage = (lang, i) => {
+    localStorage.setItem("language", lang);
+    setLanguage({ language: lang, icon: i });
+    i18n.changeLanguage(lang);
+  };
+
   const handleBilling = () => {
     if (user && user !== null && user.role.includes('admin')) {
       navigate('/billing', { replace: true })
@@ -44,11 +52,7 @@ export default function Header({ dashboard = false }) {
       toast.error("You must login with mobile")
     }
   }
-  const handleLanguage = (lang, i) => {
-    localStorage.setItem("language", lang);
-    setLanguage({ language: lang, icon: i });
-    // i18n.changeLanguage(lang);
-  };
+  
   const handlePassword = () => {
     setChangePassword(true);
   }
@@ -63,14 +67,16 @@ export default function Header({ dashboard = false }) {
     <div className="p-2  z-50">
       <div className="container flex justify-between  max-w-6xl">
         <Link to="/" className="mr-5">
-          <img src="../../assets/logo.png" className="h-16" alt="logo" />
+          <div className='flex items-center gap-2'><img src="../../assets/logo.png" className="h-16" alt="logo" /><label className='text-2xl text-stone-600'>Ⲙⲓⲛⲓ𝓥ⲉⲛⲇⲟꞅ</label></div>
+
+
         </Link>
 
         <div className="flex items-center">
           {/* Log in Button */}
           {user === null && <>
             <Link to="/auth/login" className="btn rounded-2xl btn-outline btn-sm sm:w-32  btn-info">Login</Link>
-            <div className="divider divider-horizontal h-10 my-auto" /></>
+            <div className="divider divider-horizontal mx-0 h-10 my-auto" /></>
           }
           <DropdownMenu
             summary={
@@ -95,20 +101,37 @@ export default function Header({ dashboard = false }) {
           >
             <div className="shadow bg-base-100 rounded px-2 py-1 mt-2 min-w-max last:border-none">
               <div className=' py-1'>
+                <button className='btn btn-sm btn-ghost w-full justify-start gap-3' onClick={() => navigate('/', { replace: true })}>
+                  {t('menu.scan_qr')}
+                </button>
+              </div>
+              <div className=" border-t py-1 flex ">
+                <div className={`btn btn-ghost btn-sm gap-2 justify-start ${language.language === "mn" && 'btn-active'}`}
+                  onClick={() => { handleLanguage('mn', 'twemoji:flag-mongolia') }} >
+                  <Icon className="cursor-pointer" icon="twemoji:flag-mongolia" width={24} />
+                  <p>MO</p>
+                </div>
+                <div className={`btn btn-ghost btn-sm gap-2 justify-start ${language.language === "en" && 'btn-active'}`}
+                  onClick={() => handleLanguage('en', 'twemoji:flag-for-flag-united-kingdom')} >
+                  <Icon className="cursor-pointer " icon="twemoji:flag-for-flag-united-kingdom" width={24} />
+                  <p>EN</p>
+                </div>
+              </div>
+              <div className='border-t py-1'>
                 <button className='btn btn-sm btn-ghost w-full justify-start gap-3' onClick={handleProfile}>
-                  Profile
+                {t('menu.profile')}
                 </button>
               </div>
               <div className='border-t py-1'>
                 <button className='btn btn-sm btn-ghost w-full justify-start gap-3' onClick={handleBilling}>
-                  Billing Info
+                {t('menu.billing')}
                 </button>
               </div>
               {
-                user && isAuthenticated && user.role.includes('admin')&&
+                user && isAuthenticated && user.role.includes('admin') &&
                 <div className='border-t py-1'>
                   <button className='btn btn-sm w-full btn-ghost  justify-start gap-3' onClick={() => { navigate('/admin/get-machines', { replace: true }) }}>
-                    Vendor Machines
+                  {t('menu.vendor')}
                   </button>
                 </div>
               }
@@ -118,7 +141,7 @@ export default function Header({ dashboard = false }) {
                   <button className='btn btn-sm w-full btn-ghost  justify-start gap-3' onClick={() => {
                     logout();
                   }}>
-                    Log out
+                    {t('menu.logout')}
                   </button>
                 </div>
               }

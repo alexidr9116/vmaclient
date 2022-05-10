@@ -2,14 +2,15 @@ import { Icon } from "@iconify/react";
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import AlertModal from "../../component/core/AlertModal";
 import LoadingScreen from "../../component/custom/LoadingScreen";
 import Image from "../../component/Image";
-import { API_ADMIN, ASSETS_URL, SEND_PUT_REQUEST } from "../../utils/API";
+import { API_ADMIN, ASSETS_URL, SEND_DELETE_REQUEST, SEND_PUT_REQUEST } from "../../utils/API";
 
 export default function ProductEditModal({ onClose, product, vendorId }) {
 
     const [loading, setLoading] = useState(false);
-
+    const [removeModal,setRemoveModal] = useState(false);
     const defaultValues = useMemo(() => ({
         img: product?.img || "",
         index: product?.index || 1,
@@ -83,6 +84,21 @@ export default function ProductEditModal({ onClose, product, vendorId }) {
 
         }
     }
+    const handleRemoveOk = ()=>{
+        SEND_DELETE_REQUEST(`${API_ADMIN.deleteProduct}`,product._id).then(res=>{
+            if(res.status === 200){
+                toast.success(res.message)
+                setRemoveModal(false)
+                onClose();
+            }
+            else{
+                toast.error(res.message)
+            }
+        })
+    }
+    const handleRemove = ()=>{
+        setRemoveModal(true);
+    }
     useEffect(()=>{
         if(product!==null){
             reset(defaultValues)
@@ -152,18 +168,23 @@ export default function ProductEditModal({ onClose, product, vendorId }) {
                             </div>
                         </div>
                     </div>
-                    <div className="w-full flex gap-2 justify-between mt-2">
-                        <button className={`btn btn-sm btn-info w-1/2 -ml-1   ${isSubmitting && 'loading'}`} type="submit">
+                    <div className="w-full grid grid-cols-3 gap-2">
+                        <button className={`btn btn-sm btn-info ${isSubmitting && 'loading'}`} type="submit">
                             Save
                         </button>
-                        <button className={`btn  btn-sm btn-info w-1/2   `} onClick={onClose}>
+                        <button className={`btn  btn-sm btn-info `} onClick={handleRemove} type = 'button' disabled={(product===null)}>
+                            Delete
+                        </button>
+                        <button className={`btn  btn-sm btn-info  `} onClick={onClose}>
                             Cancel
                         </button>
                     </div>
 
+
                 </form>
 
             </div>
+            {removeModal && <AlertModal onCancel={()=>setRemoveModal(false)} onAccept={handleRemoveOk} title="Do you want to remove, Sure?" description="If you have proceed this operation, the data will be removed from  database"  />}
             {loading && <LoadingScreen message='Saving' />}
         </div>
     )

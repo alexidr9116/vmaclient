@@ -3,6 +3,7 @@ import ReactDOMClient from 'react-dom/client';
 import { Toaster } from 'react-hot-toast';
 import './index.css';
 import 'react-lazy-load-image-component/src/effects/blur.css';
+import "./i18n";
 import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';

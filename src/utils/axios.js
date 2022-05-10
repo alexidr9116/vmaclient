@@ -1,7 +1,8 @@
 import axios from 'axios';
 // config
-export const SERVER_ADDRESS = "https://mini-vendor.herokuapp.com/";
+// export const SERVER_ADDRESS = "https://mini-vendor.herokuapp.com/";
 // export const SERVER_ADDRESS = "http://localhost:5500/";
+export const SERVER_ADDRESS = "https://vend.elec.mn/";
 // ----------------------------------------------------------------------
 
 const axiosInstance = axios.create({

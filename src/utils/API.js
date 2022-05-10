@@ -2,11 +2,13 @@ import axios, { SERVER_ADDRESS } from "./axios";
 
 const API_ADMIN = {
     addMiniVendor:      "api/mini-vendor/admin/vendor/add",
+    deleteMiniVendor:   "api/mini-vendor/admin/vendor/delete",
     editMiniVendor:     "api/mini-vendor/admin/vendor/edit",
     getMiniVendors:     "api/mini-vendor/admin/vendor/list",
     addProduct:         "api/mini-vendor/admin/product/add",
     editProduct:        "api/mini-vendor/admin/product/edit",
     getProducts:        "api/mini-vendor/admin/products/list/",
+    deleteProduct:      "api/mini-vendor/admin/product/delete",
     
 }
 const API_CLIENT = {

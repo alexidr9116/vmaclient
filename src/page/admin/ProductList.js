@@ -15,8 +15,8 @@ export default function ProductList() {
     const [filtered, setFiltered] = useState([]);
     const [products,setProducts] = useState([]);
     const [modal, setModal] = useState(false);
-    const handleChangeSearch = () => {
-
+    const handleChangeSearch = (value) => {
+        setFiltered(products.filter((product)=>(product.title.includes(value) || `${product.price}` === `${value}` )));
 
     }
     const handleEdit=(product)=>{
@@ -85,7 +85,7 @@ export default function ProductList() {
                         })
                     }
                 </div>
-                <Pagination totalCount={1} handleChangePage={handleChangePage} perPageCount={10} />
+                {/* <Pagination totalCount={1} handleChangePage={handleChangePage} perPageCount={10} /> */}
             </div>
             {modal &&
                 <EditModal onClose={handleClose} product = {current} vendorId={vendorId} />

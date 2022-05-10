@@ -1,9 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 import { Icon } from '@iconify/react';
 import { useNavigate, useParams } from 'react-router-dom';
+import {useTranslation} from 'react-i18next';
 import Page from "../../component/Page";
 import SearchInput from '../../component/core/SearchInput';
 import Pagination from '../../component/core/Pagination';
+
 import TextMaxLine from '../../component/core/TextMaxLine';
 import Image from '../../component/Image';
 import { API_ADMIN, API_CLIENT, ASSETS_URL, SEND_GET_REQUEST, SEND_POST_REQUEST } from '../../utils/API';
@@ -12,6 +14,7 @@ import LoadingScreen from '../../component/custom/LoadingScreen';
 import toast from 'react-hot-toast';
 
 export default function GetProducts() {
+    const {t} = useTranslation();
     const { vendorId } = useParams();
     const [invoice, setInvoice] = useState('');
     const [payModal, setPayModal] = useState(false);
@@ -106,7 +109,7 @@ export default function GetProducts() {
                                         <p>${product.price}</p>
 
                                         <div className='w-full'>
-                                            <button className='btn btn-info btn-xs h-5 rounded-md btn-outline' disabled={(product.status === 0)} onClick={() => handleQPay(product)}>Take</button>
+                                            <button className='btn btn-info btn-xs h-5 rounded-md btn-outline' disabled={(product.status === 0)} onClick={() => handleQPay(product)}>{t('words.take')}</button>
                                         </div>
 
                                     </div>
@@ -128,7 +131,7 @@ export default function GetProducts() {
                     }}
                     open={payModal}
                     side="bottom"
-                    className="bg-white p-8 "
+                    className="bg-white p-8 h-2/3 "
                 >
                     {bankList.map((item, index) =>
                         <div className={`flex gap-5 items-center mb-3 border-b cursor-pointer}`}
@@ -148,7 +151,7 @@ export default function GetProducts() {
                         </div>
                     )}
                 </Drawer>
-                <Pagination totalCount={1} handleChangePage={handleChangePage} perPageCount={10} />
+                {/* <Pagination totalCount={1} handleChangePage={handleChangePage} perPageCount={10} /> */}
             </div>
             {loading &&
                 <LoadingScreen message={loadingMessage} />

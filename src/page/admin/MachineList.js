@@ -15,8 +15,8 @@ export default function MachineList() {
     const [vendors, setVendors] = useState([]);
     const [current,setCurrent] = useState(null);
     const [filtered, setFiltered] = useState([]);
-    const handleChangeSearch = () => {
-
+    const handleChangeSearch = (value) => {
+        setFiltered(vendors.filter((vendor)=>(vendor.title.includes(value) || vendor.type.includes(value) || vendor.description.includes(value))));
 
     }
     const handleChangePage = () => {
@@ -78,7 +78,7 @@ export default function MachineList() {
 
                     ))}
                 </div>
-                <Pagination totalCount={1} handleChangePage={handleChangePage} perPageCount={10} />
+                {/* <Pagination totalCount={1} handleChangePage={handleChangePage} perPageCount={10} /> */}
             </div>
             {modal &&
                 <EditModal onClose={handleClose} id = {id} machine = {current}/>

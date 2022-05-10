@@ -4,12 +4,13 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import LoadingScreen from "../../component/custom/LoadingScreen";
 import Image from "../../component/Image";
-import { API_ADMIN, API_CLIENT, ASSETS_URL, SEND_GET_REQUEST, SEND_POST_REQUEST, SEND_PUT_REQUEST } from "../../utils/API";
+import AlertModal from '../../component/core/AlertModal';
+import { API_ADMIN, API_CLIENT, ASSETS_URL, SEND_DELETE_REQUEST, SEND_GET_REQUEST, SEND_POST_REQUEST, SEND_PUT_REQUEST } from "../../utils/API";
 
 export default function MachineEditModal({onClose, machine, id = 'add'}) {
   
     const [loading,setLoading] = useState(false);
-    
+    const [removeModal,setRemoveModal] = useState(false);
     const defaultValues = useMemo(() => ({
         img: machine?.img || "",
         vendorId:machine?.vendorId||"",
@@ -27,6 +28,21 @@ export default function MachineEditModal({onClose, machine, id = 'add'}) {
         if (e.target.files && e.target.files.length > 0) {
             setValue('img', e.target.files[0]);
         }
+    }
+    const handleRemoveOk = ()=>{
+        SEND_DELETE_REQUEST(`${API_ADMIN.deleteMiniVendor}`,id).then(res=>{
+            if(res.status === 200){
+                toast.success(res.message)
+                setRemoveModal(false)
+                onClose();
+            }
+            else{
+                toast.error(res.message)
+            }
+        })
+    }
+    const handleRemove = ()=>{
+        setRemoveModal(true);
     }
     const onSubmit = (data)=>{
         console.log(data);
@@ -145,18 +161,22 @@ export default function MachineEditModal({onClose, machine, id = 'add'}) {
                         <p className="">Vendor Description</p>
                         <textarea className="textarea textarea-bordered  w-full " placeholder="Description" required  {...register("description")} />
                     </div>
-                    <div className="w-full flex gap-2 justify-between mt-2">
-                        <button className={`btn btn-sm btn-info w-1/2 -ml-1   ${isSubmitting && 'loading'}`} type="submit">
+                    <div className="w-full grid grid-cols-3 gap-2">
+                        <button className={`btn btn-sm btn-info ${isSubmitting && 'loading'}`} type="submit">
                             Save
                         </button>
-                        <button className={`btn  btn-sm btn-info w-1/2   `} onClick={onClose}>
+                        <button className={`btn  btn-sm btn-info `} onClick={handleRemove} type = 'button' disabled={(id==='add')}>
+                            Delete
+                        </button>
+                        <button className={`btn  btn-sm btn-info  `} onClick={onClose}>
                             Cancel
                         </button>
                     </div>
 
                 </form>
-
+             
             </div>
+            {removeModal && <AlertModal onCancel={()=>setRemoveModal(false)} onAccept={handleRemoveOk} title="Do you want to remove, Sure?" description="If you have proceed this operation, the data will be removed from  database"  />}
             {loading && <LoadingScreen message='Saving' />}
         </div>
     )
