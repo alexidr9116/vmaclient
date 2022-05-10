@@ -1,33 +1,33 @@
 import { useEffect, useState } from 'react';
 import { Icon } from '@iconify/react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Page from "../../component/Page";
 import SearchInput from '../../component/core/SearchInput';
-import Pagination from '../../component/core/Pagination'; 
+import Pagination from '../../component/core/Pagination';
 import TextMaxLine from '../../component/core/TextMaxLine';
 import Image from '../../component/Image';
-import { API_ADMIN, API_CLIENT, ASSETS_URL, SEND_GET_REQUEST } from '../../utils/API';
+import { API_ADMIN, API_CLIENT, ASSETS_URL, SEND_GET_REQUEST, SEND_POST_REQUEST } from '../../utils/API';
+import Drawer from '../../component/Drawer';
+import LoadingScreen from '../../component/custom/LoadingScreen';
+import toast from 'react-hot-toast';
 
 export default function GetProducts() {
     const { vendorId } = useParams();
+    const [invoice, setInvoice] = useState('');
+    const [payModal, setPayModal] = useState(false);
     const [current, setCurrent] = useState(null);
     const [filtered, setFiltered] = useState([]);
     const [products, setProducts] = useState([]);
-    const [modal, setModal] = useState(false);
+    const [bankList, setBankList] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [loadingMessage, setLoadingMessage] = useState('loading..');
+    const navigate = useNavigate();
     const handleChangeSearch = () => {
 
 
     }
-    const handleEdit = (product) => {
-        setCurrent(product)
-        setModal(true);
-    }
     const handleChangePage = () => {
 
-    }
-    const handleClose = () => {
-        setModal(false)
-        loadList();
     }
     const loadList = () => {
         if (vendorId)
@@ -40,6 +40,37 @@ export default function GetProducts() {
                 }
 
             })
+
+    }
+    const handleQPay = (product) => {
+        setLoadingMessage('Processing with QPay');
+        setLoading(true);
+        console.log(product)
+        SEND_POST_REQUEST(API_CLIENT.buyProduct,
+            {
+                title:product.title,
+                cost:product.price,
+                vendorId:product.vendorId,
+                index:product.index,
+                productId:product._id,
+            }
+        ).then(res=>{
+            setLoading(false);
+            if(res.status === 200){
+                setBankList(res.data.bankList.urls)
+                setInvoice(res.data.bankList.invoice_id)
+                setPayModal(true);
+                
+            }
+            else{
+                toast.error(res?.message||"Error while creating invoice")
+            }
+            console.log(res);
+        }).catch(err=>{
+            setLoading(false);
+            console.log(err)
+        })
+
     }
     useEffect(() => {
         loadList();
@@ -49,43 +80,79 @@ export default function GetProducts() {
             <div className="flex w-full gap-2 flex-col">
                 <div className="flex w-full justify-center items-center">
                     <SearchInput handleChangeSearch={handleChangeSearch} />
-                    <button className="btn btn-outline btn-sm btn-circle btn-error ml-2" onClick={() => {
-                        setCurrent(null);
-                        setModal(true);
-                    }}>
-                        <Icon icon="fa:plus" />
-                    </button>
+
                 </div>
                 <div className='grid grid-cols-2 gap-2 px-4 sm:grid-cols-4 md:grid-cols-6'>
                     {
                         filtered.map((product, index) => {
                             return (
 
-                                <div className="card w-full bg-base-100 shadow-xl" key={index} onClick={() => handleEdit(product)}>
+                                <div className="card w-full bg-base-100 shadow-xl" key={index}>
                                     <figure>
                                         {product.status === 0 &&
-                                            <Image className="max-h-[130px]" src={`${ASSETS_URL.image}empty.jpg`} alt="Product" />
+                                            <Image alt={`product-${index}`} className="max-h-[130px]" src={`${ASSETS_URL.image}empty.jpg`} />
                                         }
                                         {product.status === 1 &&
-                                            <Image className="max-h-[130px]" src={`${ASSETS_URL.root}${product.img}`} alt="Product" />
+                                            <Image alt={`product-${index}`} className="max-h-[130px]" src={`${ASSETS_URL.root}${product.img}`} />
                                         }
+
+                                        <label className="badge badge-error badge-outline absolute right-1 top-1">Slot Index:{product.index}</label>
+
                                     </figure>
                                     <div className={`card-body p-1 text-center ${product.status === 0 ? 'text-stone-400' : 'text-black'}`}>
                                         <TextMaxLine maxLine={1}>
                                             {product.title}
                                         </TextMaxLine>
                                         <p>${product.price}</p>
+
                                         <div className='w-full'>
-                                            <label className="badge badge-info badge-outline">Slot Index:{product.index}</label>
+                                            <button className='btn btn-info btn-xs h-5 rounded-md btn-outline' disabled={(product.status === 0)} onClick={() => handleQPay(product)}>Take</button>
                                         </div>
+
                                     </div>
                                 </div>
                             )
                         })
                     }
                 </div>
+                <Drawer
+                    onClose={() => {
+
+                        if (invoice !== "") {
+                            setPayModal(false);
+                            navigate(`/take-product/${invoice}`);
+                        }
+                        else {
+
+                        }
+                    }}
+                    open={payModal}
+                    side="bottom"
+                    className="bg-white p-8 "
+                >
+                    {bankList.map((item, index) =>
+                        <div className={`flex gap-5 items-center mb-3 border-b cursor-pointer}`}
+                            key={index}
+                        // onClick={() => { item.enable && handleCheck(item) }}
+                        >
+                            <div>
+                                <Image src={item.logo}
+                                    width={50} height={50}
+                                />
+                            </div>
+                            <a className="font-bold text-lg overflow-hidden text-ellipsis whitespace-nowrap" href={item.link}>
+
+                                <label>{item.name}</label><br />
+                                <label className="text-sm">{item.description}</label>
+                            </a>
+                        </div>
+                    )}
+                </Drawer>
                 <Pagination totalCount={1} handleChangePage={handleChangePage} perPageCount={10} />
             </div>
-         </Page>
+            {loading &&
+                <LoadingScreen message={loadingMessage} />
+            }
+        </Page>
     )
 }

@@ -11,7 +11,9 @@ const API_ADMIN = {
 }
 const API_CLIENT = {
     getMiniVendor:      "api/mini-vendor/vendor/",
-    getProducts:        "api/mini-vendor/product/list/"
+    getProducts:        "api/mini-vendor/product/list/",
+    buyProduct:         "api/mini-vendor/product/buy",
+    getPayHistory:      "api/mini-vendor/payment/history/"
 }
 const API_AUTH = {
     login: "api/mini-vendor/auth/login",

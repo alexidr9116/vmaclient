@@ -41,6 +41,7 @@ export default function Router(){
             children:[
                 {element:<ClientHome/>, index:true},
                 {element:<Products/>, path:'get-products/:vendorId'},
+                {element:<TakeProduct/>, path:'take-product/:invoice'},
                 {element:<Profile/>, path:'profile'},
                 {element:<Billing/>, path:'billing'}
             ]            
@@ -55,6 +56,7 @@ const Profile = Loadable(lazy(() => import("../page/Profile")));
 const Billing = Loadable(lazy(() => import("../page/BillingInfo")));
 const ClientHome = Loadable(lazy(() => import("../page/client/Home")));
 const Products = Loadable(lazy(() => import("../page/client/GetProducts")));
+const TakeProduct = Loadable(lazy(() => import("../page/client/TakeProduct")));
 
 const GetProducts = Loadable(lazy(() => import("../page/admin/ProductList")));
 const GetMachines = Loadable(lazy(() => import("../page/admin/MachineList")));

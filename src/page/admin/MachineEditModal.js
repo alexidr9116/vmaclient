@@ -16,6 +16,7 @@ export default function MachineEditModal({onClose, machine, id = 'add'}) {
         slotCount:machine?.slotCount||"",
         title:machine?.title||"",
         description:machine?.description||"",
+        type:machine?.type||'ble',
          
     }), [machine]);
     
@@ -37,6 +38,7 @@ export default function MachineEditModal({onClose, machine, id = 'add'}) {
             iData.append("vendorId", data.vendorId);
             iData.append("slotCount", data.slotCount);
             iData.append("title", data.title);
+            iData.append("type", data.type);
             iData.append("description", data.description);
             iData.append("id", id);
             SEND_PUT_REQUEST(API_ADMIN.addMiniVendor, iData).then(res => {
@@ -98,20 +100,31 @@ export default function MachineEditModal({onClose, machine, id = 'add'}) {
                 >
                     <div className='grid grid-cols-2 w-full'>
                         <div>
-                            <div className="w-full mb-3">
+                            <div className="w-full ">
                                 <p className="">VendorID*</p>
                                 <input className="input h-10 border border-stone-300 w-full" required {...register("vendorId")} />
                             </div>
+                            
                             <div className="w-full">
                                 <p className="">Slot Count*</p>
                                 <input  type = 'number' className="input h-10 border border-stone-300 w-full" required  {...register("slotCount")} />
                             </div> 
+                            <div className="w-full ">
+                                <p className="">VendorType*</p>
+                                <select className="select select-sm h-10 select-info w-full mb-2" {...register("type")} >
+                                    <option value='ble'  >Bluetooth</option>
+                                    <option value='sms'  >SMS</option>
+                                    <option value='4g'  >4G</option>
+                                    <option value='wifi'  >Wi-fi</option>
+
+                                </select>
+                            </div>
                         </div>
                         <div className="card p-3  gap-5  h-full">
                             {/* avatar */}
-                            <div className="mx-auto relative">
+                            <div className="mx-auto relative mt-4">
 
-                                <Image className="w-32 h-32 rounded-lg outline-dashed outline-stone-300 outline-offset-4 outline-1"
+                                <Image className="w-36 h-36 rounded-lg outline-dashed outline-stone-300 outline-offset-4 outline-1"
                                     src={typeof img === 'string' ? img : (img ? URL.createObjectURL(img) : '')}
                                 />
 

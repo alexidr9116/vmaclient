@@ -63,8 +63,12 @@ export default function MachineList() {
                         <div className="card card-side bg-base-100 shadow-xl p-3" key = {index}>
                             <figure><Image className="h-[200px] w-[130px]"  src={`${ASSETS_URL.root}${vendor.img}`} alt="Vendor" /></figure>
                             <div className="card-body gap-0 p-3">
-                                <h2 className="card-title">{vendor.title}</h2>
+                                <h2 className="card-title">{vendor.title} <label className='badge badge-outline badge-info'>
+                                    {vendor.type}
+                                </label></h2>
+                                
                                 <p>{vendor.description}.</p>
+                               
                                 <div className="card-actions justify-end">
                                     <button className="btn btn-info  btn-sm" onClick={() => handleProduct(`${vendor.vendorId}`)}>Products</button>
                                     <button className="btn btn-error btn-sm" onClick = {()=>handleEdit(`${vendor._id}`, vendor)}>Edit</button>

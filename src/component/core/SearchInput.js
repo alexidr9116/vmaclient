@@ -9,7 +9,7 @@ export default function SearchInput({handleChangeSearch}){
         handleChangeSearch(e.target.value)
     }
     return(
-        <div className = "flex items-center rounded border rounded-lg ">
+        <div className = "flex items-center  border rounded-lg ">
             <div className="flex-none ml-2"><Icon icon = "fa:search"  className="text-info"/></div>
             <input type = "text" className="input input-sm grow" onChange={handleChange} />
             <button className="btn btn-sm btn-info flex-none btn-outline border-l-radius" >Search</button>
