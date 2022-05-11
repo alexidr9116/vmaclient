@@ -163,7 +163,7 @@ export default function ProductEditModal({ onClose, product, vendorId }) {
                         </div>
                         <div>
                             <div className="w-full">
-                                <p className="">Price*</p>
+                                <p className="">Price(₮)*</p>
                                 <input type='number' step={0.1}  className="input h-10 border border-stone-300 w-full" required  {...register("price")} />
                             </div>
                         </div>

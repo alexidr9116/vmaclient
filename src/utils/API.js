@@ -1,9 +1,19 @@
 import axios, { SERVER_ADDRESS } from "./axios";
-
+const API_DASHBOARD = {
+    getSystemInformation:   "api/mini-vendor/admin/dashboard/system",
+    getSentChart:           "api/mini-vendor/admin/dashboard/sent",
+    getReceiveChart:        "api/mini-vendor/admin/dashboard/receive",
+    
+}
+const API_PAYMENT = {
+    getEbarimt:         "api/mini-vendor/payment/ebarimt",
+}
 const API_ADMIN = {
+    admins:             "api/mini-vendor/admin/admin-management",
     addMiniVendor:      "api/mini-vendor/admin/vendor/add",
     deleteMiniVendor:   "api/mini-vendor/admin/vendor/delete",
     editMiniVendor:     "api/mini-vendor/admin/vendor/edit",
+    changeVendorOwner:     "api/mini-vendor/admin/vendor/set-owner",
     getMiniVendors:     "api/mini-vendor/admin/vendor/list",
     addProduct:         "api/mini-vendor/admin/product/add",
     editProduct:        "api/mini-vendor/admin/product/edit",
@@ -15,7 +25,8 @@ const API_CLIENT = {
     getMiniVendor:      "api/mini-vendor/vendor/",
     getProducts:        "api/mini-vendor/product/list/",
     buyProduct:         "api/mini-vendor/product/buy",
-    getPayHistory:      "api/mini-vendor/payment/history/"
+    getPayHistory:      "api/mini-vendor/payment/history/",
+    takeProduct:        "api/mini-vendor/product/take",
 }
 const API_AUTH = {
     login: "api/mini-vendor/auth/login",
@@ -86,5 +97,7 @@ export {
     API_AUTH,
     API_ADMIN,
     API_CLIENT,
-    API_BILLING
+    API_BILLING,
+    API_DASHBOARD,
+    API_PAYMENT
 };

@@ -106,7 +106,7 @@ export default function GetProducts() {
                                         <TextMaxLine maxLine={1}>
                                             {product.title}
                                         </TextMaxLine>
-                                        <p>${product.price}</p>
+                                        <p>₮{product.price}</p>
 
                                         <div className='w-full'>
                                             <button className='btn btn-info btn-xs h-5 rounded-md btn-outline' disabled={(product.status === 0)} onClick={() => handleQPay(product)}>{t('words.take')}</button>

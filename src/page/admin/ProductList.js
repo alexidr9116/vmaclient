@@ -75,7 +75,7 @@ export default function ProductList() {
                                         <TextMaxLine maxLine={1}>
                                             {product.title}
                                         </TextMaxLine>
-                                        <p>${product.price}</p>
+                                        <p>₮{product.price}</p>
                                         <div className='w-full'>
                                         <label className = "badge badge-info badge-outline">Slot Index:{product.index}</label>
                                         </div>

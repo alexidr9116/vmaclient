@@ -105,6 +105,14 @@ export default function Header({ dashboard = false }) {
                   {t('menu.scan_qr')}
                 </button>
               </div>
+              {isAuthenticated && user && user.role.includes('admin')
+              &&
+              <div className='border-t py-1'>
+                <button className='btn btn-sm btn-ghost w-full justify-start gap-3' onClick={()=>navigate('/admin/dashboard')}>
+                {t('menu.dashboard')}
+                </button>
+              </div>
+              }
               <div className=" border-t py-1 flex ">
                 <div className={`btn btn-ghost btn-sm gap-2 justify-start ${language.language === "mn" && 'btn-active'}`}
                   onClick={() => { handleLanguage('mn', 'twemoji:flag-mongolia') }} >

@@ -51,7 +51,8 @@
         "profile":"Profile",
         "billing":"Billing",
         "vendor":"Vendor Machines",
-        "logout":"Logout"
+        "logout":"Logout",
+        "dashboard":"Dashboard"
     },
     "home":{
         "scan_qr":"Scanning QR",
@@ -65,5 +66,22 @@
         "vendor_type":"Vendor Type",
         "slot_index":"Slot Index",
         "get_product":"Get Product"
+    },
+    "dashboard": {
+        "total":"Of mine",
+        "totalTransaction":"Total Trx",
+        "spent":"Spent",
+        "received":"received",
+        "amount": "Amount",
+        "allVendors": "Vendors",
+        "available": "Available",
+        "allProducts": "Products",
+        "filled": "Filled",
+        "empty": "Empty",
+        "systemInformation": "System-Information",
+        "sentInformation": "Spent-Information",
+        "more": "more",
+        "receiveInformation": "Receive-Information",
+        "invoiceHistory": "Invoice-History"
     }
 }

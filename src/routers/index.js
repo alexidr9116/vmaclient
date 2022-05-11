@@ -21,7 +21,8 @@ export default function Router(){
             element:<AuthGuard><MainLayout/></AuthGuard>,
             children:[
                 {element:<GetProducts/>, path:'get-products/:vendorId'},
-                {element:<GetMachines/>, path:'get-machines'}
+                {element:<GetMachines/>, path:'get-machines'},
+                {element:<AdminDashboard/>, path:'dashboard'}
             ]            
 
         },
@@ -42,8 +43,8 @@ export default function Router(){
                 {element:<ClientHome/>, index:true},
                 {element:<Products/>, path:'get-products/:vendorId'},
                 {element:<TakeProduct/>, path:'take-product/:invoice'},
-                {element:<Profile/>, path:'profile'},
-                {element:<Billing/>, path:'billing'}
+                {element:<AuthGuard><Profile/></AuthGuard>, path:'profile'},
+                {element:<AuthGuard><Billing/></AuthGuard>, path:'billing'}
             ]            
 
         }
@@ -57,6 +58,6 @@ const Billing = Loadable(lazy(() => import("../page/BillingInfo")));
 const ClientHome = Loadable(lazy(() => import("../page/client/Home")));
 const Products = Loadable(lazy(() => import("../page/client/GetProducts")));
 const TakeProduct = Loadable(lazy(() => import("../page/client/TakeProduct")));
-
+const AdminDashboard = Loadable(lazy(() => import("../page/admin/Dashboard")));
 const GetProducts = Loadable(lazy(() => import("../page/admin/ProductList")));
 const GetMachines = Loadable(lazy(() => import("../page/admin/MachineList")));

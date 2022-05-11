@@ -7,44 +7,46 @@ import Image from "../../component/Image";
 import AlertModal from '../../component/core/AlertModal';
 import { API_ADMIN, API_CLIENT, ASSETS_URL, SEND_DELETE_REQUEST, SEND_GET_REQUEST, SEND_POST_REQUEST, SEND_PUT_REQUEST } from "../../utils/API";
 
-export default function MachineEditModal({onClose, machine, id = 'add'}) {
-  
-    const [loading,setLoading] = useState(false);
-    const [removeModal,setRemoveModal] = useState(false);
+export default function MachineEditModal({ onClose, machine, id = 'add' }) {
+
+    const [loading, setLoading] = useState(false);
+    const [removeModal, setRemoveModal] = useState(false);
     const defaultValues = useMemo(() => ({
         img: machine?.img || "",
-        vendorId:machine?.vendorId||"",
-        slotCount:machine?.slotCount||"",
-        title:machine?.title||"",
-        description:machine?.description||"",
-        type:machine?.type||'ble',
-         
+        vendorId: machine?.vendorId || "",
+        slotCount: machine?.slotCount || "",
+        title: machine?.title || "",
+        description: machine?.description || "",
+        deviceNumber:machine?.deviceNumber|| "",
+        type: machine?.type || 'ble',
+        
     }), [machine]);
-    
 
-    const { register, handleSubmit, setValue, watch, reset, formState: { errors, isSubmitting } } = useForm({defaultValues});
+
+    const { register, handleSubmit, setValue, watch, reset, formState: { errors, isSubmitting } } = useForm({ defaultValues });
     const img = watch('img');
+    const deviceType = watch('type');
     const imageChange = (e) => {
         if (e.target.files && e.target.files.length > 0) {
             setValue('img', e.target.files[0]);
         }
     }
-    const handleRemoveOk = ()=>{
-        SEND_DELETE_REQUEST(`${API_ADMIN.deleteMiniVendor}`,id).then(res=>{
-            if(res.status === 200){
+    const handleRemoveOk = () => {
+        SEND_DELETE_REQUEST(`${API_ADMIN.deleteMiniVendor}`, id).then(res => {
+            if (res.status === 200) {
                 toast.success(res.message)
                 setRemoveModal(false)
                 onClose();
             }
-            else{
+            else {
                 toast.error(res.message)
             }
         })
     }
-    const handleRemove = ()=>{
+    const handleRemove = () => {
         setRemoveModal(true);
     }
-    const onSubmit = (data)=>{
+    const onSubmit = (data) => {
         console.log(data);
         setLoading(true);
         let iData = new FormData();
@@ -57,6 +59,7 @@ export default function MachineEditModal({onClose, machine, id = 'add'}) {
             iData.append("type", data.type);
             iData.append("description", data.description);
             iData.append("id", id);
+            iData.append('deviceNumber',data.deviceNumber);
             SEND_PUT_REQUEST(API_ADMIN.addMiniVendor, iData).then(res => {
                 setLoading(false);
                 if (res.status === 200) {
@@ -67,7 +70,7 @@ export default function MachineEditModal({onClose, machine, id = 'add'}) {
                     toast.error(res.message)
                 }
 
-            }).catch(err=>{
+            }).catch(err => {
                 toast.error("Internal Server Error")
             });;
         }
@@ -89,7 +92,7 @@ export default function MachineEditModal({onClose, machine, id = 'add'}) {
                         toast.error(res.message)
                     }
 
-                }).catch(err=>{
+                }).catch(err => {
                     setLoading(false);
                     console.log(err);
                     toast.error("Server Error")
@@ -99,12 +102,12 @@ export default function MachineEditModal({onClose, machine, id = 'add'}) {
         }
     }
 
-    useEffect(()=>{
-        if(id!=="add" && machine!==null){
+    useEffect(() => {
+        if (id !== "add" && machine !== null) {
             reset(defaultValues)
-            setValue('img',`${ASSETS_URL.root}${machine.img}`);
-         }
-    },[id,machine,reset,defaultValues,setValue])
+            setValue('img', `${ASSETS_URL.root}${machine.img}`);
+        }
+    }, [id, machine, reset, defaultValues, setValue])
 
     return (
         <div className={`modal modal-open bg-black/0 `}>
@@ -120,11 +123,11 @@ export default function MachineEditModal({onClose, machine, id = 'add'}) {
                                 <p className="">VendorID*</p>
                                 <input className="input h-10 border border-stone-300 w-full" required {...register("vendorId")} />
                             </div>
-                            
+
                             <div className="w-full">
                                 <p className="">Slot Count*</p>
-                                <input  type = 'number' className="input h-10 border border-stone-300 w-full" required  {...register("slotCount")} />
-                            </div> 
+                                <input type='number' className="input h-10 border border-stone-300 w-full" required  {...register("slotCount")} />
+                            </div>
                             <div className="w-full ">
                                 <p className="">VendorType*</p>
                                 <select className="select select-sm h-10 select-info w-full mb-2" {...register("type")} >
@@ -157,6 +160,13 @@ export default function MachineEditModal({onClose, machine, id = 'add'}) {
                         <p className="">Vendor Title</p>
                         <input className="input h-10 border border-stone-300 w-full" required  {...register("title")} />
                     </div>
+                    {deviceType === 'sms' &&
+                        <div className="w-full ">
+                            <p className="">Device Number</p>
+                            <input className="input h-10 border border-stone-300 w-full" required  {...register("deviceNumber")} />
+                        </div>
+                    }
+
                     <div className="w-full">
                         <p className="">Vendor Description</p>
                         <textarea className="textarea textarea-bordered  w-full " placeholder="Description" required  {...register("description")} />
@@ -165,7 +175,7 @@ export default function MachineEditModal({onClose, machine, id = 'add'}) {
                         <button className={`btn btn-sm btn-info ${isSubmitting && 'loading'}`} type="submit">
                             Save
                         </button>
-                        <button className={`btn  btn-sm btn-info `} onClick={handleRemove} type = 'button' disabled={(id==='add')}>
+                        <button className={`btn  btn-sm btn-info `} onClick={handleRemove} type='button' disabled={(id === 'add')}>
                             Delete
                         </button>
                         <button className={`btn  btn-sm btn-info  `} onClick={onClose}>
@@ -174,9 +184,8 @@ export default function MachineEditModal({onClose, machine, id = 'add'}) {
                     </div>
 
                 </form>
-             
             </div>
-            {removeModal && <AlertModal onCancel={()=>setRemoveModal(false)} onAccept={handleRemoveOk} title="Do you want to remove, Sure?" description="If you have proceed this operation, the data will be removed from  database"  />}
+            {removeModal && <AlertModal onCancel={() => setRemoveModal(false)} onAccept={handleRemoveOk} title="Do you want to remove, Sure?" description="If you have proceed this operation, the data will be removed from  database" />}
             {loading && <LoadingScreen message='Saving' />}
         </div>
     )
