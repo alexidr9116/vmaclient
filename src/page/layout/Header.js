@@ -9,6 +9,7 @@ import Drawer from '../../component/Drawer';
 import DropdownMenu from '../../component/DropdownMenu';
 
 import { ASSETS_URL } from '../../utils/API';
+import ChangePassword from '../ChangePassword';
 
 
 Header.propTypes = {
@@ -37,11 +38,11 @@ export default function Header({ dashboard = false }) {
   };
 
   const handleBilling = () => {
-    if (user && user !== null && user.role.includes('admin')) {
+    if (user && user !== null) {
       navigate('/billing', { replace: true })
     }
     else {
-      toast.error("Login with Admin or Super Admin role")
+      toast.error("You must login with mobile")
     }
   }
   const handleProfile = () => {
@@ -105,10 +106,9 @@ export default function Header({ dashboard = false }) {
                   {t('menu.scan_qr')}
                 </button>
               </div>
-              {isAuthenticated && user && user.role.includes('admin')
-              &&
+              {isAuthenticated && user &&
               <div className='border-t py-1'>
-                <button className='btn btn-sm btn-ghost w-full justify-start gap-3' onClick={()=>navigate('/admin/dashboard')}>
+                <button className='btn btn-sm btn-ghost w-full justify-start gap-3' onClick={()=>navigate('/dashboard')}>
                 {t('menu.dashboard')}
                 </button>
               </div>
@@ -125,6 +125,14 @@ export default function Header({ dashboard = false }) {
                   <p>EN</p>
                 </div>
               </div>
+              {isAuthenticated &&
+                <div className="border-t py-1">
+                  <button className="btn btn-ghost btn-sm w-full justify-start gap-3" onClick={handlePassword} >
+                    
+                    {t('words.changePassword')}
+                  </button>
+                </div>
+              }
               <div className='border-t py-1'>
                 <button className='btn btn-sm btn-ghost w-full justify-start gap-3' onClick={handleProfile}>
                 {t('menu.profile')}
@@ -140,6 +148,14 @@ export default function Header({ dashboard = false }) {
                 <div className='border-t py-1'>
                   <button className='btn btn-sm w-full btn-ghost  justify-start gap-3' onClick={() => { navigate('/admin/get-machines', { replace: true }) }}>
                   {t('menu.vendor')}
+                  </button>
+                </div>
+              }
+              {
+                user && isAuthenticated && user.role.includes('super-admin') &&
+                <div className='border-t py-1'>
+                  <button className='btn btn-sm w-full btn-ghost  justify-start gap-3' onClick={() => { navigate('/admin/users', { replace: true }) }}>
+                  {t('words.users')}
                   </button>
                 </div>
               }
@@ -172,7 +188,8 @@ export default function Header({ dashboard = false }) {
 
         </Drawer>
       }
-
+ {/* password modal */}
+ {changePassword && <ChangePassword onClose={() => setChangePassword(false)} />}
     </div>
   );
 }

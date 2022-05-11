@@ -19,7 +19,10 @@ const API_ADMIN = {
     editProduct:        "api/mini-vendor/admin/product/edit",
     getProducts:        "api/mini-vendor/admin/products/list/",
     deleteProduct:      "api/mini-vendor/admin/product/delete",
-    
+    users:                  "api/mini-vendor/admin/user-management",
+    removeUser:             "api/mini-vendor/admin/user/remove",
+    changeUserStatus:        "api/mini-vendor/admin/user/change-active",
+
 }
 const API_CLIENT = {
     getMiniVendor:      "api/mini-vendor/vendor/",

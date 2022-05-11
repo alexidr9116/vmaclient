@@ -46,6 +46,13 @@
         "dooropened": "The door has opened please get your parcel!",
         "closedoor": "Please close the door if you got the parcel"
     },
+    
+    "changePassword": {
+        "title": "Change Password",
+        "oldPassword": "Old Password",
+        "newPassword": "New Password",
+        "confirmPassword": "Confirm Password"
+    },
     "menu":{
         "scan_qr":"Scan QR",
         "profile":"Profile",
