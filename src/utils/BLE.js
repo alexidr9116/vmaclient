@@ -111,7 +111,7 @@ export default function BLE({
           // receiveCharacteristic = sendCharacteristic;
           receiveCharacteristic = await service.getCharacteristic(receiveCharUuid);
           if (!receiveCharacteristic) {
-            return NotificationManager.error('Whoops, failed. Retry: Receive characteristic not found.');
+            return toast.error('Whoops, failed. Retry: Receive characteristic not found.');
           }
           setConnected(true);
           handleSend();
