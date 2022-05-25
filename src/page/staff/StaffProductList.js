@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { Icon } from '@iconify/react';
 import toast from 'react-hot-toast';
 import { IconButton } from '@mui/material';
 import { ArrowBack, ArrowForward } from '@mui/icons-material';
@@ -11,10 +11,8 @@ import { API_ADMIN, API_CLIENT, API_WAREHOUSE, ASSETS_URL, SEND_GET_REQUEST, SEN
 import { fPrice, fSimpleDate } from '../../utils/uFormatter';
 import LoadingScreen from '../../component/custom/LoadingScreen';
 
-
 const PER_COUNT = 10;
-export default function ProductList() {
-    const {t} = useTranslation();
+export default function StaffProductList() {
     const [location, setLocation] = useState('');
     const [checkModal, setCheckModal] = useState(false);
     const [filtered, setFiltered] = useState([]);
@@ -60,7 +58,7 @@ export default function ProductList() {
     }
     const loadList = () => {
         if (warehouse && warehouse._id)
-            SEND_GET_REQUEST(`${API_ADMIN.getProducts}${warehouse._id}`).then(res => {
+            SEND_GET_REQUEST(`${API_ADMIN.getStaffProducts}${warehouse._id}`).then(res => {
 
                 if (res.status === 200 && res.data && res.data.data) {
                     const data = res.data.data;
@@ -165,13 +163,13 @@ export default function ProductList() {
         <Page title='Product Management' className="flex w-full flex-col gap-4">
             <div className='flex w-full justify-between p-2'>
                 <select className='select select-bordered ' onChange={(e) => { (setLocationFilter(e.target.value)) }} value={locationFilter}>
-                    <option value='' disabled>{t('select.location')}</option>
-                    <option value='all'>{t('select.all')}</option>
-                    <option value='china'>{t('select.ch')}</option>
-                    <option value='coming'>{t('select.coming')}</option>
-                    <option value='ub'>{t('select.ub')}</option>
-                    <option value='delivery'>{t('select.delivery')}</option>
-                    
+                    <option value='' disabled>Select Status..</option>
+                    <option value='all'>All</option>
+                    <option value='china'>China</option>
+                    <option value='coming'>Coming</option>
+                    <option value='ub'>Ulaanbaatar</option>
+                    <option value='delivery'>Delivery</option>
+                    <option value='completed'>Completed</option>
                 </select>
                 <SearchInput handleChangeSearch={handleChangeSearch} />
             </div>
@@ -184,13 +182,14 @@ export default function ProductList() {
                                     <input type="checkbox" className="select-all checkbox rounded-md checkbox-sm" onClick={handleSelectAll} onChange = {()=>{}} checked = {(selected.length === pageFiltered.length)} />
                                 </label>
                             </th>
-                            <th>{t('table.barcode')}</th>
-                            <th>{t('table.mobile')}</th>
-                            <th>{t('table.price')}</th>
-                            <th>{t('table.location')}</th>
-                            <th>{t('table.payment')}</th>
-                            <th>{t('table.regTime')}</th>
-                            <th>{t('table.ubTime')}</th>
+                            <th>Barcode</th>
+                            <th>Mobile</th>
+                            <th>Price(¥)</th>
+                            <th>Location</th>
+                            <th>PayStatus</th>
+                            <th>RegTime</th>
+                            <th>UbTime</th>
+
                         </tr>
                     </thead>
                     <tbody>
@@ -210,7 +209,7 @@ export default function ProductList() {
                                     {product.mobile}
                                 </td>
                                 <td>
-                                    {fPrice(product.price, '₮')}
+                                    {fPrice(product.priceY, '¥')}
                                 </td>
                                 <td>
                                     {product.position}
@@ -240,13 +239,10 @@ export default function ProductList() {
                     {/* <input type="checkbox" className='checkbox ml-1' onChange={handleSelectAll} /> */}
                     {selected && selected.length >= 1 &&
                         <select className='select select-bordered select-sm' onChange={handleChangeLocation} value={location}>
-                            <option value="" disabled >{t('select.option')}</option>
-                            {/* <option value="coming">Left from China</option> */}
-                            <option value="ub">{t('select.ub')}</option>
-                            <option value="delivery">{t('select.delivery')}</option>
-                            <option value="delete" disabled >{t('select.option')}</option>
-                            <option value="remove">{t('select.delete')} ({selected.length}) </option>
-                            
+                            <option value="" disabled >Select Option</option>
+                            <option value="coming">Left from China</option>
+                            <option value="payment" disabled >Select Action</option>
+                            <option value="remove">Delete ({selected.length}) </option>
                         </select>
                     }
                 </div>

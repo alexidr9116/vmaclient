@@ -15,7 +15,7 @@ export default function ScrollToTopButton() {
     });
   }
   return (
-    show && <span className="btn border-none bg-sky-500/40 hover:bg-sky-500/60 btn-circle fixed bottom-14 hover:bottom-[3.75rem] transition-all right-10 z-[999]"
+    show && <span className="btn text-white border-none bg-sky-500/40 hover:bg-sky-500/60 btn-circle fixed bottom-14 hover:bottom-[3.75rem] transition-all right-10 z-[999]"
       onClick={handleClick}
     >
       <Icon icon={'oi:chevron-top'} width={24} height={24}/>

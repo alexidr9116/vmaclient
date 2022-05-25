@@ -1,29 +1,22 @@
 import React from 'react';
 import ReactDOMClient from 'react-dom/client';
-import { Toaster } from 'react-hot-toast';
-import './index.css';
-import 'react-lazy-load-image-component/src/effects/blur.css';
-import "./i18n";
+
 import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter } from 'react-router-dom';
 import ScrollToTopButton from './component/ScrollToTopButton';
-import { AuthProvider } from './contexts/JWTContext';
-
+import './index.css';
 const container = document.getElementById('root');
 const root = ReactDOMClient.createRoot(container);
 root.render(
-  <AuthProvider>
     <HelmetProvider>
       <BrowserRouter>
-        <Toaster position="top-right" />
         <ScrollToTopButton />
         <App />
       </BrowserRouter>
     </HelmetProvider>
-  </AuthProvider>
 );
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

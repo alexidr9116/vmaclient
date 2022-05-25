@@ -30,7 +30,6 @@ export default function ProductEditModal({ onClose, product, vendorId }) {
         }
     }
      const onSubmit = (data)=>{
-        console.log(data);
         setLoading(true);
         let iData = new FormData();
         if (typeof img === "object") {

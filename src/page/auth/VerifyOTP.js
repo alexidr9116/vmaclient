@@ -52,7 +52,7 @@ export default function VerifyOTP() {
   const onSubmit = async (data) => {
     const result = await otpVerify(Object.values(data).join(''));
     if(result.success){
-      navigate('/profile',{replace:true})
+      navigate('/client/profile',{replace:true})
     }
     else{
       toast.error(result.err);

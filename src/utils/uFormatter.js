@@ -4,7 +4,7 @@ export function fNumber(number) {
     return numeral(number).format("0,0.00a").replace(".00", '');
 }
 export function fPrice(number, currency) {
-    return `${fNumber(number)} ${currency}`;
+    return `${currency}${fNumber(number)}`;
 }
 export function fRemain(current, period) {
     const rm = period - current;
@@ -21,7 +21,6 @@ export function fRemain(current, period) {
 }
 export function fShortDate(number){
     try{
-
         const date = new Date(number).toUTCString();
         return date.substring(0,date.length-3)
     }
